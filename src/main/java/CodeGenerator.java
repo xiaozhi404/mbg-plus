@@ -1,7 +1,5 @@
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.core.exceptions.MybatisPlusException;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.InjectionConfig;
 import com.baomidou.mybatisplus.generator.config.*;
@@ -11,62 +9,55 @@ import com.baomidou.mybatisplus.generator.engine.VelocityTemplateEngine;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class CodeGenerator {
+
     /**
-     * <p>
-     * 读取控制台内容
-     * </p>
+     * 配置连接数据库
      */
-    public static String scanner(String tip) {
-        Scanner scanner = new Scanner(System.in);
-        StringBuilder help = new StringBuilder();
-        help.append("请输入" + tip + "：");
-        System.out.println(help.toString());
-        if (scanner.hasNext()) {
-            String ipt = scanner.next();
-            if (StringUtils.isNotEmpty(ipt)) {
-                return ipt;
-            }
-        }
-        throw new MybatisPlusException("请输入正确的" + tip + "！");
-    }
+    private static String dbUrl = "jdbc:mysql://localhost:3306/test?useUnicode=true&useSSL=false&characterEncoding=utf8";
+    private static String userName = "root";
+    private static String pwd = "";
+    /**
+     * 配置表名，实体名
+     */
+    private static String table = "tbl_user";
+    private static String entity = "User";
+    //设置是否逆向生成kotlin语言
+    private static boolean isKotlin = false;
+
 
     public static void main(String[] args) {
         // 代码生成器
         AutoGenerator mpg = new AutoGenerator();
-
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
         String projectPath = System.getProperty("user.dir");
         gc.setOutputDir(projectPath + "/src/main/java");
         gc.setAuthor("xiaozhi");
         gc.setOpen(false);
-        gc.setSwagger2(true); //实体属性 Swagger2 注解
-        gc.setEntityName("ExamType");
-        gc.setMapperName("ExamTypeMapper");
-        gc.setServiceName("ExamTypeService");
-        gc.setControllerName("ExamTypeController");
-        gc.setKotlin(true);
+        gc.setSwagger2(true); //实体属性 Swagger2 注解tbl_examinee_exam_recode
+        gc.setEntityName(entity);
+        gc.setMapperName(entity+"Mapper");
+        gc.setServiceName(entity+"Service");
+        gc.setServiceImplName(entity+"ServiceImpl");
+        gc.setControllerName(entity+"Controller");
+        //设置生成Kotlin语言
+        gc.setKotlin(isKotlin);
         gc.setIdType(IdType.AUTO);
         mpg.setGlobalConfig(gc);
-
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://localhost:3306/exam?useUnicode=true&useSSL=false&characterEncoding=utf8");
-        // dsc.setSchemaName("public");
+        dsc.setUrl(dbUrl);
         dsc.setDriverName("com.mysql.jdbc.Driver");
-        dsc.setUsername("root");
-        dsc.setPassword("");
+        dsc.setUsername(userName);
+        dsc.setPassword(pwd);
         mpg.setDataSource(dsc);
-
         // 包配置
         PackageConfig pc = new PackageConfig();
-        pc.setModuleName(scanner("模块名"));
+        pc.setModuleName("");
         pc.setParent("cn.codemao");
         mpg.setPackageInfo(pc);
-
         // 自定义配置
         InjectionConfig cfg = new InjectionConfig() {
             @Override
@@ -115,7 +106,7 @@ public class CodeGenerator {
         //strategy.setEntityLombokModel(true);
         strategy.setRestControllerStyle(true);
         //strategy.setSuperControllerClass("com.baomidou.ant.common.BaseController");
-        strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));
+        strategy.setInclude(table);
         //strategy.setSuperEntityColumns("id");
         strategy.setControllerMappingHyphenStyle(true);
         strategy.setTablePrefix(pc.getModuleName() + "_");
