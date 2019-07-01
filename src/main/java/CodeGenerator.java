@@ -36,7 +36,7 @@ public class CodeGenerator {
         gc.setOutputDir(projectPath + "/src/main/java");
         gc.setAuthor("xiaozhi");
         gc.setOpen(false);
-        gc.setSwagger2(false); //实体属性 Swagger2 注解tbl_examinee_exam_recode
+        gc.setSwagger2(true);
         gc.setEntityName(entity);
         gc.setMapperName(entity+"Mapper");
         gc.setServiceName(entity+"Service");
